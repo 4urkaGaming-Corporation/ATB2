@@ -1,6 +1,5 @@
 FROM python:3.13-slim
 
-# Установка libpq-dev и зависимостей для Pillow
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     libjpeg-dev \

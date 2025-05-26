@@ -1,0 +1,26 @@
+{% load static %}
+{% block title %}Товари{% endblock %}
+{% block content %}
+    <h1>Наші товари</h1>
+    <div class="row">
+        {% for product in products %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
+                    {% else %}
+                        <img src="{% static 'shop/images/placeholder.jpg' %}" class="card-img-top" alt="Заглушка">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ product.name }}</h5>
+                        <p class="card-text">{{ product.price }} ₽</p>
+                        <a href="{% url 'product_detail' product.slug %}" class="btn btn-primary">Детально</a>
+                        <button class="btn btn-success mt-2" onclick="addToCart('{{ product.id }}')">Додати в корзину</button>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Товари відсутні.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

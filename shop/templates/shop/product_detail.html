@@ -1,0 +1,22 @@
+{% extends 'shop/base.html' %}
+{% load static %}
+{% block title %}{{ product.name }}{% endblock %}
+{% block content %}
+    <div class="row">
+        <div class="col-md-6">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" class="img-fluid" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'shop/images/placeholder.jpg' %}" class="img-fluid" alt="Заглушка">
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h1>{{ product.name }}</h1>
+            <p><strong>Цена:</strong> {{ product.price }} ₽</p>
+            <p><strong>Категория:</strong> {{ product.category.name }}</p>
+            <p><strong>На складе:</strong> {{ product.stock }} шт.</p>
+            <p>{{ product.description|linebreaks }}</p>
+            <button class="btn btn-success" onclick="addToCart('{{ product.id }}')">Добавить в корзину</button>
+        </div>
+    </div>
+{% endblock %}

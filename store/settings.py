@@ -51,7 +51,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'store',
-        'USER': 'postgres',  # Измените с 'store_user' на 'postgres'
+        'USER': 'postgres', 
         'PASSWORD': 'store_password',
         'HOST': 'db',
         'PORT': '5432',

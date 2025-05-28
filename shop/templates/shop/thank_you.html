@@ -1,0 +1,24 @@
+{% extends 'shop/base.html' %}
+{% block title %}Дякуємо за покупку!{% endblock %}
+{% block content %}
+    <!-- Заголовок сторінки -->
+    <h1>Дякуємо за ваше замовлення!</h1>
+    <div class="alert alert-success">
+        <!-- Повідомлення про успішне замовлення -->
+        <p><strong>Замовлення успішно оформлено!</strong></p>
+        <p><strong>ПІБ:</strong> {{ name }}</p>
+        <p><strong>Email:</strong> {{ email }}</p>
+        <p><strong>Телефон:</strong> {{ phone }}</p>
+        <p><strong>Адреса доставки:</strong> {{ address }}</p>
+        <p><strong>Разом:</strong> {{ cart_total }} ₴</p>
+        <!-- Список товарів у замовленні -->
+        <h4>Товари у замовленні:</h4>
+        <ul>
+            {% for item in cart_items %}
+                <li>{{ item.product.name }} ({{ item.quantity }} шт.) - {{ item.total_price }} ₴</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <!-- Кнопка для повернення на головну -->
+    <a href="{% url 'home' %}" class="btn btn-primary">Повернутися на головну</a>
+{% endblock %}

@@ -1,15 +1,17 @@
 {% extends 'shop/base.html' %}
-{% block title %}Корзина{% endblock %}
+{% block title %}Кошик{% endblock %}
 {% block content %}
-    <h1>Ваша корзина</h1>
+    <!-- Заголовок сторінки -->
+    <h1>Ваш кошик</h1>
     {% if cart %}
+        <!-- Таблиця з товарами у кошику -->
         <table class="table">
             <thead>
                 <tr>
                     <th>Товар</th>
                     <th>Ціна</th>
                     <th>Кількість</th>
-                    <th>Всього</th>
+                    <th>Разом</th>
                     <th></th>
                 </tr>
             </thead>
@@ -17,19 +19,23 @@
                 {% for item in cart %}
                     <tr>
                         <td>{{ item.product.name }}</td>
-                        <td>{{ item.product.price }} ₽</td>
+                        <td>{{ item.product.price }} ₴</td>
                         <td>{{ item.quantity }}</td>
-                        <td>{{ item.total_price }} ₽</td>
+                        <td>{{ item.total_price }} ₴</td>
                         <td>
+                            <!-- Кнопка видалення товару -->
                             <button class="btn btn-danger btn-sm" onclick="removeFromCart('{{ item.product.id }}')">Видалити</button>
                         </td>
                     </tr>
                 {% endfor %}
             </tbody>
         </table>
-        <p><strong>Итого:</strong> {{ cart_total }} ₽</p>
-        <a href="{% url 'checkout' %}" class="btn btn-primary">Оформити заказ</a>
+        <!-- Загальна сума -->
+        <p><strong>Разом:</strong> {{ cart_total }} ₴</p>
+        <!-- Кнопка для оформлення замовлення -->
+        <a href="{% url 'checkout' %}" class="btn btn-primary">Оформити замовлення</a>
     {% else %}
-        <p>Ваша корзина пуста.</p>
+        <!-- Повідомлення про порожній кошик -->
+        <p>Ваш кошик порожній.</p>
     {% endif %}
 {% endblock %}

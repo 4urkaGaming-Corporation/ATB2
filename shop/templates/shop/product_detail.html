@@ -4,6 +4,7 @@
 {% block content %}
     <div class="row">
         <div class="col-md-6">
+            <!-- Зображення товару -->
             {% if product.image %}
                 <img src="{{ product.image.url }}" class="product-detail-img" alt="{{ product.name }}">
             {% else %}
@@ -11,16 +12,18 @@
             {% endif %}
         </div>
         <div class="col-md-6">
+            <!-- Назва товару -->
             <h1>{{ product.name }}</h1>
-            <p><strong>Ціна:</strong> {{ product.price }} ₽</p>
+            <p><strong>Ціна:</strong> {{ product.price }} ₴</p>
             <p><strong>Категорія:</strong> {{ product.category.name }}</p>
             <p><strong>На складі:</strong> {{ product.stock }} шт.</p>
             <p>{{ product.description|linebreaks }}</p>
+            <!-- Форма для додавання до кошика -->
             <form action="{% url 'cart_add' %}" method="post" class="d-inline">
                 {% csrf_token %}
                 <input type="hidden" name="product_id" value="{{ product.id }}">
                 <input type="hidden" name="quantity" value="1">
-                <button type="submit" class="btn btn-success">Додати в корзину</button>
+                <button type="submit" class="btn btn-success">Додати до кошика</button>
             </form>
         </div>
     </div>

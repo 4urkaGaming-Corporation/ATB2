@@ -2,29 +2,34 @@
 {% load static %}
 {% block title %}Товари{% endblock %}
 {% block content %}
+    <!-- Заголовок сторінки -->
     <h1>Товари</h1>
     <div class="row">
         {% for product in products %}
             <div class="col-md-4 mb-4">
                 <div class="card h-100">
+                    <!-- Зображення товару -->
                     {% if product.image %}
                         <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                     {% else %}
                         <img src="{% static 'shop/images/placeholder.jpg' %}" class="card-img-top" alt="Заглушка">
                     {% endif %}
                     <div class="card-body">
+                        <!-- Назва та ціна товару -->
                         <h5 class="card-title">{{ product.name }}</h5>
-                        <p class="card-text">{{ product.price }} ₽</p>
+                        <p class="card-text">{{ product.price }} ₴</p>
+                        <!-- Форма для додавання до кошика -->
                         <form action="{% url 'cart_add' %}" method="post" class="d-inline">
                             {% csrf_token %}
                             <input type="hidden" name="product_id" value="{{ product.id }}">
                             <input type="hidden" name="quantity" value="1">
-                            <button type="submit" class="btn btn-success mt-2">Додати в корзину</button>
+                            <button type="submit" class="btn btn-success mt-2">Додати до кошика</button>
                         </form>
                     </div>
                 </div>
             </div>
         {% empty %}
+            <!-- Повідомлення про відсутність товарів -->
             <p>Товари відсутні.</p>
         {% endfor %}
     </div>

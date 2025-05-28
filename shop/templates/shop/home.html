@@ -1,9 +1,11 @@
 {% extends 'shop/base.html' %}
 {% block title %}Ласкаво просимо до інтернет-магазину{% endblock %}
 {% block content %}
+    <!-- Головний банер -->
     <div class="jumbotron text-center">
         <h1 class="display-4">Ласкаво просимо до нашого магазину!</h1>
         <p class="lead">Ознайомтеся з широким асортиментом товарів за вигідними цінами.</p>
+        <!-- Кнопка для початку покупок -->
         <a class="btn btn-primary btn-lg" href="{% url 'product_list' %}" role="button">Почати покупки</a>
     </div>
-{% endblock %}
+{% endblock %} 

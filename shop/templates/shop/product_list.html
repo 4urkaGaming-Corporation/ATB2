@@ -1,11 +1,12 @@
+{% extends 'shop/base.html' %}
 {% load static %}
 {% block title %}Товари{% endblock %}
 {% block content %}
-    <h1>Наші товари</h1>
+    <h1>Товари</h1>
     <div class="row">
         {% for product in products %}
             <div class="col-md-4 mb-4">
-                <div class="card">
+                <div class="card h-100">
                     {% if product.image %}
                         <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
                     {% else %}
@@ -14,8 +15,12 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ product.name }}</h5>
                         <p class="card-text">{{ product.price }} ₽</p>
-                        <a href="{% url 'product_detail' product.slug %}" class="btn btn-primary">Детально</a>
-                        <button class="btn btn-success mt-2" onclick="addToCart('{{ product.id }}')">Додати в корзину</button>
+                        <form action="{% url 'cart_add' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <input type="hidden" name="product_id" value="{{ product.id }}">
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="btn btn-success mt-2">Додати в корзину</button>
+                        </form>
                     </div>
                 </div>
             </div>

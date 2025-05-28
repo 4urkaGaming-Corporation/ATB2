@@ -1,8 +1,13 @@
+import json
+import logging
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import JsonResponse
-from .models import Product, Category
 from django.views.decorators.http import require_POST
+from .models import Product, Category
 from django.contrib import messages
+
+# Настройка логирования
+logger = logging.getLogger(__name__)
 
 def home(request):
     return render(request, 'shop/home.html')
@@ -33,27 +38,45 @@ def cart_detail(request):
 @require_POST
 def cart_add(request):
     try:
-        data = request.POST if request.POST else request.body
-        import json
-        data = json.loads(data) if isinstance(data, bytes) else data
-        product_id = data.get('product_id')
-        quantity = int(data.get('quantity', 1))
+        logger.debug("Received cart_add request: %s", request.body or request.POST)
+        if request.content_type == 'application/json':
+            data = json.loads(request.body)
+            product_id = data.get('product_id')
+            quantity = int(data.get('quantity', 1))
+        else:
+            product_id = request.POST.get('product_id')
+            quantity = int(request.POST.get('quantity', 1))
+        logger.debug("Product ID: %s, Quantity: %s", product_id, quantity)
         product = get_object_or_404(Product, id=product_id)
         if product.stock < quantity:
-            return JsonResponse({'success': False, 'error': 'Недостаточно товара на складе'})
+            logger.warning("Insufficient stock for product %s", product_id)
+            if request.content_type == 'application/json':
+                return JsonResponse({'success': False, 'error': 'Недостаточно товара на складе'})
+            else:
+                messages.error(request, 'Недостаточно товара на складе')
+                return redirect('product_list')
         cart = request.session.get('cart', {})
         cart[product_id] = cart.get(product_id, 0) + quantity
         request.session['cart'] = cart
         request.session.modified = True
-        return JsonResponse({'success': True})
+        logger.info("Product %s added to cart", product_id)
+        if request.content_type == 'application/json':
+            return JsonResponse({'success': True})
+        else:
+            messages.success(request, 'Товар добавлен в корзину!')
+            return redirect('cart_detail')
     except Exception as e:
-        return JsonResponse({'success': False, 'error': str(e)})
+        logger.error("Error in cart_add: %s", str(e))
+        if request.content_type == 'application/json':
+            return JsonResponse({'success': False, 'error': str(e)})
+        else:
+            messages.error(request, f'Ошибка при добавлении товара: {str(e)}')
+            return redirect('product_list')
 
 @require_POST
 def cart_remove(request):
     try:
         data = request.POST if request.POST else request.body
-        import json
         data = json.loads(data) if isinstance(data, bytes) else data
         product_id = data.get('product_id')
         cart = request.session.get('cart', {})
@@ -70,7 +93,6 @@ def checkout(request):
     if not cart:
         return redirect('cart_detail')
     if request.method == 'POST':
-        # Заглушка для обработки заказа
         messages.success(request, 'Заказ успешно оформлен!')
         request.session['cart'] = {}
         return redirect('home')

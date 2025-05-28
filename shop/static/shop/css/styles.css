@@ -1,10 +1,31 @@
 body {
     font-family: Arial, sans-serif;
 }
+
+/* Стили для изображений в списке товаров */
 .card-img-top {
-    height: 200px;
-    object-fit: cover;
+    height: 150px; /* Компактная высота для изображений в карточках */
+    width: 100%; /* Занимает всю ширину карточки */
+    object-fit: cover; /* Сохраняет пропорции, обрезая изображение */
 }
+
+/* Стили для изображения на странице деталей товара */
+.product-detail-img {
+    max-height: 200px; /* Ограничение высоты для компактного вида */
+    max-width: 100%; /* Не превышает ширину контейнера */
+    object-fit: cover; /* Сохраняет пропорции */
+    border: 1px solid #ddd; /* Лёгкая рамка для аккуратного вида */
+    border-radius: 5px; /* Скругленные углы */
+}
+
+/* Стили для контейнера карточки */
+.card {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    overflow: hidden; /* Обрезает содержимое, выходящее за рамки */
+}
+
+/* Стили для jumbotron */
 .jumbotron {
     background-color: #f8f9fa;
     padding: 2rem;

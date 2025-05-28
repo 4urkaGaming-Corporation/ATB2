@@ -1,4 +1,7 @@
+console.log('cart.js loaded'); // Для отладки
+
 function addToCart(productId) {
+    console.log('addToCart called with productId:', productId);
     fetch('/cart/add/', {
         method: 'POST',
         headers: {
@@ -7,18 +10,27 @@ function addToCart(productId) {
         },
         body: JSON.stringify({ product_id: productId, quantity: 1 }),
     })
-    .then(response => response.json())
+    .then(response => {
+        console.log('Response status:', response.status);
+        return response.json();
+    })
     .then(data => {
+        console.log('Response data:', data);
         if (data.success) {
             alert('Товар добавлен в корзину!');
             location.reload();
         } else {
-            alert('Ошибка при добавлении товара.');
+            alert('Ошибка при добавлении товара: ' + data.error);
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Произошла ошибка при добавлении товара.');
     });
 }
 
 function removeFromCart(productId) {
+    console.log('removeFromCart called with productId:', productId);
     fetch('/cart/remove/', {
         method: 'POST',
         headers: {
@@ -34,6 +46,10 @@ function removeFromCart(productId) {
         } else {
             alert('Ошибка при удалении товара.');
         }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        alert('Произошла ошибка при удалении товара.');
     });
 }
 
@@ -49,5 +65,6 @@ function getCookie(name) {
             }
         }
     }
+    console.log('CSRF Token:', cookieValue); // Для отладки
     return cookieValue;
 }
